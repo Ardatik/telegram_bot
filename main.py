@@ -4,9 +4,8 @@ from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, Conve
 from dotenv import load_dotenv
 import json
 import os
-
-load_dotenv() 
-
+from datetime import datetime
+import glob
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
@@ -72,10 +71,7 @@ async def sector_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.message.reply_text("Напишите жалобу")
     return TEXT
 
-import json
-from datetime import datetime
-import os
-import glob
+
 
 async def data_to_json(data):
     category = data.get('category')
@@ -116,8 +112,8 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 def main():
+    load_dotenv() 
     application = ApplicationBuilder().token(os.getenv('TOKEN')).build()
-
     conversation_handler = ConversationHandler(
         entry_points=[MessageHandler(filters.Regex(r"^Написать жалобу$"), category_choose)],
         states={
